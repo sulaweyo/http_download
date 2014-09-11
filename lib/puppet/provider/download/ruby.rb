@@ -2,30 +2,35 @@
 #
 require 'puppet'
 require 'net/http'
+require 'uri'
 
 Puppet::Type.type(:download).provide(:ruby) do
 
   def download
     begin
-      uri = URI(resource[:uri])
-      http = Net::HTTP.new(uri.host, uri.port)
-      request = Net::HTTP::Get.new(uri.request_uri)
-      http = Net::HTTP.start(uri.host)
-      resp = http.request_get(uri.request_uri)
+      Puppet.debug("HTTP download uri is ... '#{resource[:uri]}'")
+      s3url = URI(resource[:uri])
+      http = Net::HTTP.new(s3url.host, s3url.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      resp = http.request_get(s3url.request_uri)
       redirects = 0
       while resp.code == '301' || resp.code == '302' 
         Puppet.debug("Redirect to #{resp.header['location']}")
-        newUri = URI.parse(resp.header['location'])
-        http = Net::HTTP.start(newUri.host)
-        resp = http.request_get(newUri.request_uri)
+        s3url = URI.parse(resp.header['location'])
+        http = Net::HTTP.start(s3url.host, s3url.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        resp = http.request_get(s3url.request_uri)
         redirects += 1
         if (redirects > 10)
           raise 'too many redirects'
         end
       end
       if resp.code == '200'
+        Puppet.debug('Starting download...')
         file = File.open(resource[:dest], "wb")
-        http.request_get(newUri.request_uri) do |response|
+        http.request_get(s3url.request_uri) do |response|
           response.read_body do |segment|
             file.write(segment)
           end
@@ -38,7 +43,6 @@ Puppet::Type.type(:download).provide(:ruby) do
     rescue StandardError => e
       Puppet.crit("Exception during http download -> \n#{e.inspect}")
     ensure
-      http.finish
       file.close
     end
   end
