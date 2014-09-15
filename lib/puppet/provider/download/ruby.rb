@@ -41,7 +41,7 @@ Puppet::Type.type(:download).provide(:ruby) do
     rescue Net::HTTPError => ehttp
       Puppet.crit("HTTP Exception during http download -> \n#{ehttp.inspect}")
     rescue StandardError => e
-      Puppet.crit("Exception during http download -> \n#{e.inspect}")
+      Puppet.crit("Exception during http download -> \n#{e.inspect}\n#{e.backtrace}")
     ensure
       file.close
     end
