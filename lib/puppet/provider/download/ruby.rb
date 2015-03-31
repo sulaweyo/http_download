@@ -6,7 +6,7 @@ require 'uri'
 
 Puppet::Type.type(:download).provide(:ruby) do
   def fetch(uri_str, limit = 10)
-    raise ArgumentError, 'too many HTTP redirects' if limit == 0
+    raise ArgumentError, 'Too many HTTP redirects' if limit == 0
     ssl = resource[:use_ssl]
     if !ssl and uri_str.start_with? 'https'
       ssl = true
@@ -22,14 +22,15 @@ Puppet::Type.type(:download).provide(:ruby) do
         request.basic_auth(resource[:user], resource[:pass])
       end
       http.request request do |response|
-
         case response
         when Net::HTTPRedirection then
           location = response['location']
           Puppet.notice("redirected to #{location}")
           fetch(location, limit - 1)
         when Net::HTTPForbidden then
-          raise SecurityError, 'access denied'
+          raise SecurityError, 'Access denied'
+        when Net::HTTPNotFound then
+          raise ArgumentError, 'Not found'
         when Net::HTTPSuccess then
           open resource[:dest], 'wb' do |io|
             response.read_body do |chunk|
@@ -37,7 +38,7 @@ Puppet::Type.type(:download).provide(:ruby) do
             end
           end
         else
-          raise "undefined state => #{response.code} - #{response.message}"
+          raise "Unexpected state => #{response.code} - #{response.message}"
         end
       end
     end
@@ -60,7 +61,7 @@ Puppet::Type.type(:download).provide(:ruby) do
       rescue Net::HTTPError => ehttp
         Puppet.crit("HTTP Exception during http download -> \n#{ehttp.inspect}")
       rescue StandardError => e
-        Puppet.crit("Exception during http download -> \n#{e.inspect}\n#{e.backtrace}")
+        Puppet.crit("Exception during http download -> \n#{e.inspect}")
       end
     end
     return success
