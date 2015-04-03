@@ -1,7 +1,8 @@
 # This type holds the code to upload the user attributes
 #
 #
-require "puppet"
+require 'puppet'
+require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:download) do
   desc <<-EOS

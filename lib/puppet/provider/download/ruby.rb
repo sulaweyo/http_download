@@ -50,6 +50,7 @@ Puppet::Type.type(:download).provide(:ruby) do
       begin
         fetch(resource[:uri])
         success = true
+        break
       rescue SecurityError => s
         Puppet.crit("SecurityError -> \n#{s.inspect}")
         break
@@ -63,6 +64,7 @@ Puppet::Type.type(:download).provide(:ruby) do
       rescue StandardError => e
         Puppet.crit("Exception during http download -> \n#{e.inspect}")
       end
+      sleep(5)
     end
     return success
   end
