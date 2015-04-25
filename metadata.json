@@ -1,9 +1,28 @@
 {
   "author": "Sledge Sulaweyo",
   "dependencies": [],
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "name": "sledge-http_download",
-  "operatingsystem_support": [],
+  "operatingsystem_support": [
+  	{
+      "operatingsystem": "Windows",
+      "operatingsystemrelease": [
+        "Server 2008",
+        "Server 2008 R2",
+        "Server 2012",
+        "Server 2012 R2",
+        "7",
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04",
+        "14.04"
+      ]
+    }
+  ],
   "project_page": " https://forge.puppetlabs.com/sledge/http_download",
   "requirements": [],
   "source": "https://github.com/sulaweyo/http_download",
