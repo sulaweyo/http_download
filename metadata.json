@@ -1,32 +1,24 @@
 {
-  "author": "Sledge Sulaweyo",
-  "dependencies": [],
-  "license": "Apache-2.0",
-  "name": "sledge-http_download",
-  "operatingsystem_support": [
-  	{
-      "operatingsystem": "Windows",
-      "operatingsystemrelease": [
-        "Server 2008",
-        "Server 2008 R2",
-        "Server 2012",
-        "Server 2012 R2",
-        "7",
-        "8"
-      ]
-    },
-    {
-      "operatingsystem": "Ubuntu",
-      "operatingsystemrelease": [
-        "12.04",
-        "14.04"
-      ]
-    }
-  ],
-  "project_page": " https://forge.puppetlabs.com/sledge/http_download",
-  "requirements": [],
-  "source": "https://github.com/sulaweyo/http_download",
-  "summary": "Contains a type that allows simple http downloads via ruby.",
-  "tags": [],
-  "version": "0.1.2"
+	"author": "Sledge Sulaweyo",
+	"dependencies": [],
+	"license": "Apache-2.0",
+	"name": "sledge-http_download",
+	"operatingsystem_support": [{
+			"operatingsystem": "Windows"
+		},{
+			"operatingsystem": "RedHat"
+		},{
+			"operatingsystem": "Ubuntu"
+		},{
+			"operatingsystem": "Debian"
+		},{
+			"operatingsystem": "CentOS"
+		}
+	],
+	"project_page": " https://forge.puppetlabs.com/sledge/http_download",
+	"requirements": [],
+	"source": "https://github.com/sulaweyo/http_download",
+	"summary": "Contains a type that allows simple http downloads via ruby.",
+	"tags": [],
+	"version": "0.1.2"
 }
