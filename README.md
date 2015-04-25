@@ -7,7 +7,7 @@ It supports SSL and Basic authentication.
 
 ## Class: http_download
 
-The class just shows how to use this type by downloading a file.
+The class of that module just acts as test and example showing how to use the type.
 
 ### Sample Usage
 

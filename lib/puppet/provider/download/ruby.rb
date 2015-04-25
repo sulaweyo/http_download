@@ -7,13 +7,10 @@ require 'uri'
 Puppet::Type.type(:download).provide(:ruby) do
   def fetch(uri_str, limit = 10)
     raise ArgumentError, 'Too many HTTP redirects' if limit == 0
-    ssl = resource[:use_ssl]
-    if !ssl and uri_str.start_with? 'https'
-      ssl = true
-    end
     uri = URI(uri_str)
-    Net::HTTP.start(uri.host, uri.port) do |http|
-      if (ssl)
+    http = Net::HTTP.new(uri.hostname, uri.port)
+    begin
+      if resource[:use_ssl] or uri_str.start_with? 'https'
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
@@ -41,6 +38,11 @@ Puppet::Type.type(:download).provide(:ruby) do
           raise "Unexpected state => #{response.code} - #{response.message}"
         end
       end
+    rescue Net::HTTPError => e
+      if nil != http and http.started?
+        http.finish()
+      end
+      raise e
     end
   end
 
