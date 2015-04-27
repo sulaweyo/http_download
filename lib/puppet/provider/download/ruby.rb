@@ -8,7 +8,7 @@ Puppet::Type.type(:download).provide(:ruby) do
   def fetch(uri_str, limit = 10)
     raise ArgumentError, 'Too many HTTP redirects' if limit == 0
     uri = URI(uri_str)
-    http = Net::HTTP.new(uri.hostname, uri.port)
+    http = Net::HTTP.new(uri.host, uri.port)
     begin
       if resource[:use_ssl] or uri_str.start_with? 'https'
         http.use_ssl = true
