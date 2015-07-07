@@ -55,4 +55,32 @@ Puppet::Type.newtype(:download) do
   newparam(:pass) do
     desc "A pass to use for basic authentication."
   end
+  
+  newparam(:proxy_uri) do
+    desc "HTTP proxy URL."
+  end
+  
+  newparam(:proxy_user) do
+    desc "A user for proxy authentication."
+  end
+  
+  newparam(:proxy_pass) do
+    desc "A password for proxy authentication."
+  end
+  
+  newparam(:noclobber) do
+    desc "Do not overwrite destination if it exists."
+  end
+  
+  newparam(:owner) do
+    desc "Owner of destination file."
+  end
+  
+  newparam(:group) do
+    desc "Group of destination file."
+  end
+  
+  newparam(:mode) do
+    desc "Mode of destination file."
+  end
 end
