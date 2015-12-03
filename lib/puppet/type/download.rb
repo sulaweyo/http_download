@@ -8,21 +8,31 @@ Puppet::Type.newtype(:download) do
   desc <<-EOS
     This type allows to do downloads via ruby without the need for any localy provided executable.
    
-    Example:
+    Example usage:
   
-          download { 'my download':
-            uri  => 'http://www.example.com/download/example.txt',
-            dest => '/tmp/example.txt'
-          }
+      Download a file:
+        
+        download { 'my download':
+          uri  => 'http://www.example.com/download/example.txt',
+          dest => '/tmp/example.txt'
+        }
           
-          download { 'my sll and basic auth download':
-           uri  => 'https://www.example.com/download/example.txt',
-           dest => '/tmp/example.txt',
-           user => 'user',
-           pass => 'pass'
-          }
-               
-  
+      Download file only if no local file exists:
+        
+        download { 'my download':
+          uri   => 'http://www.example.com/download/example.txt',
+          dest  => '/tmp/example.txt',
+          force => false
+        }
+          
+      Download file using basic authentication:    
+        
+        download { 'my sll and basic auth download':
+          uri  => 'https://www.example.com/download/example.txt',
+          dest => '/tmp/example.txt',
+          user => 'user',
+          pass => 'pass'
+        }
   EOS
 
   ensurable do
@@ -40,6 +50,16 @@ Puppet::Type.newtype(:download) do
 
   newparam(:dest) do
     desc "The destination file. Make sure the path to this file exists!"
+  end
+  
+  newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
+    desc <<-EOS
+      Per default a file download will be forced as there is no good way to check if the local file 
+      matches the download. If you only want to ensure that a file with that name exists locally you
+      can set this to false.
+    EOS
+    defaultto :true
+    newvalues(:true, :false)
   end
 
   newparam(:use_ssl, :boolean => true, :parent => Puppet::Parameter::Boolean) do

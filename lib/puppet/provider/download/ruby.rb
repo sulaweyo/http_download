@@ -72,10 +72,13 @@ Puppet::Type.type(:download).provide(:ruby) do
   end
 
   def exists?
-    false
+    (File.file?(resource[:dest]) and !resource[:force])
   end
 
   def destroy
+    if File.file?(resource[:dest])
+      File.delete(resource[:dest])
+    end
     true
   end
 
