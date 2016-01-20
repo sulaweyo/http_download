@@ -14,8 +14,14 @@ class http_download {
   }
 
   download { 'test https and large file':
-    uri  => 'https://downloads.mariadb.org/f/mariadb-10.0.17/bintar-linux-glibc_214-x86_64/mariadb-10.0.17-linux-glibc_214-x86_64.tar.gz?serve',
-    dest => "${target}mariadb-10.0.17-linux-glibc_214-x86_64.tar.gz",
+    uri  => 'https://downloads.mariadb.org/f/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz?serve',
+    dest => "${target}mariadb-10.1.10.tar.gz",
+  }
+  
+  download { 'test force false':
+    uri   => 'https://downloads.mariadb.org/f/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz?serve',
+    dest  => "${target}mariadb-10.1.10.tar.gz",
+    force => false
   }
 
   download { 'test basic auth':

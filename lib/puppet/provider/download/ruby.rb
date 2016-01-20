@@ -11,7 +11,6 @@ Puppet::Type.type(:download).provide(:ruby) do
     
 
     if resource[:proxy_host] and resource[:proxy_port]
-      
       if resource[:proxy_user] and resource[:proxy_pass]
         http = Net::HTTP.new(uri.host, uri.port, resource[:proxy_host], resource[:proxy_port], resource[:proxy_user], resource[:proxy_pass])
       else

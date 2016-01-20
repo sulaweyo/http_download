@@ -24,6 +24,12 @@ download { 'my ssl and basic auth download':
     pass => 'pass'
 }
 
+download {'download if not exists':
+    uri   => 'http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.22/7z922.exe',
+    force => false,
+    dest  => '/tmp/7z922.exe'
+}
+
 download { 'download with basic auth and ssl, ssl forced':
     uri     => 'http://host.com:8443/test.txt',
     use_ssl => true,
