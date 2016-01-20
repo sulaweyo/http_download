@@ -27,11 +27,22 @@ Puppet::Type.newtype(:download) do
           
       Download file using basic authentication:    
         
-        download { 'my sll and basic auth download':
+        download { 'my ssl and basic auth download':
           uri  => 'https://www.example.com/download/example.txt',
           dest => '/tmp/example.txt',
           user => 'user',
           pass => 'pass'
+        }
+
+      Download file using proxy settings:
+
+        download { 'my download behind a proxy':
+          uri         => 'https://www.example.com/download/example.txt',
+          dest        => '/tmp/example.txt',
+          proxy_host  => '127.0.0.1',
+          proxy_port  => '3128',
+          proxy_user  => 'user', # optionnal: only if proxy need authentication 
+          proxy_pass  => 'pass' # optionnal: only if proxy need authentication 
         }
   EOS
 
@@ -75,4 +86,22 @@ Puppet::Type.newtype(:download) do
   newparam(:pass) do
     desc "A pass to use for basic authentication."
   end
+
+  newparam(:proxy_host) do
+    desc "The proxy hostname. Make sure the host exists!"
+  end
+
+  newparam(:proxy_port) do
+    desc "The proxy port. Make sure the port is open!"
+  end
+
+
+  newparam(:proxy_user) do
+    desc "The proxy username. This is an optional parameter"
+  end
+
+  newparam(:proxy_pass) do
+    desc "The proxy password. This is an optional parameter"
+  end
+
 end
