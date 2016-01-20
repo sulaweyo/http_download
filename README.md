@@ -31,6 +31,23 @@ download { 'download with basic auth and ssl, ssl forced':
     user    => 'user',
     pass    => 'pass'
 }
+
+download { 'download with proxy settings without auth':
+    uri         => 'http://host.com:8443/test.txt',
+    dest        => '/tmp/example.txt',
+    proxy_host  => '127.0.0.1',
+    proxy_port  => '3128'
+}
+
+download { 'download with proxy setting with auth':
+    uri         => 'http://host.com:8443/test.txt',
+    dest        => '/tmp/example.txt',
+    proxy_host  => '127.0.0.1',
+    proxy_port  => '3128',
+    proxy_user  => 'my-proxy-user',
+    proxy_pass  => 'my-proxy-pass'
+}
+
 ```
 
 ## Supported OSes
