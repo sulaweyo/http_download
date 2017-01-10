@@ -40,11 +40,10 @@ Puppet::Type.type(:download).provide(:ruby) do
         when Net::HTTPNotFound then
           raise ArgumentError, 'Not found'
         when Net::HTTPSuccess then
-          open resource[:dest], 'wb' do |io|
-            response.read_body do |chunk|
-              io.write chunk
-            end
+          if process_backup? then
+            backup_existing_artefact
           end
+          save_new_artefact response
         else
           raise "Unexpected state => #{response.code} - #{response.message}"
         end
@@ -54,6 +53,40 @@ Puppet::Type.type(:download).provide(:ruby) do
         http.finish()
       end
       raise e
+    end
+  end
+
+  def process_backup?
+    resource[:backupsuffix]
+  end
+  
+  def backup_existing_artefact
+    if not process_backup? then
+        # backupsuffix is not specified, so don't do any backup
+        return
+    end
+  
+    begin
+      dest_file_exists = File.stat(resource[:dest]).file?
+    rescue Errno::ENOENT
+      # dest file doesn't exist, we have nothing to rename
+      dest_file_exists = false
+    end
+    if dest_file_exists then
+      rename_destination = resource[:dest]+resource[:backupsuffix]
+      begin
+        File.rename resource[:dest], rename_destination
+      rescue Errno::ENOENT
+        raise "Unable to rename file #{resource[:dest]} to #{rename_destination}"
+      end
+    end
+  end
+
+  def save_new_artefact(response)
+    open resource[:dest], 'wb' do |io|
+      response.read_body do |chunk|
+        io.write chunk
+      end
     end
   end
 
