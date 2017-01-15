@@ -25,6 +25,14 @@ Puppet::Type.newtype(:download) do
           force => false
         }
           
+      Download a file and maintain backup of old version with '.bak' suffix:
+        
+        download { 'my download':
+          uri  => 'http://www.example.com/download/example.txt',
+          dest => '/tmp/example.txt',
+          backupsuffix => '.bak'
+        }
+          
       Download file using basic authentication:    
         
         download { 'my ssl and basic auth download':
@@ -63,6 +71,10 @@ Puppet::Type.newtype(:download) do
     desc "The destination file. Make sure the path to this file exists!"
   end
   
+  newparam(:backupsuffix) do
+    desc "Create backup of destination with given suffix."
+  end
+
   newparam(:force, :boolean => true, :parent => Puppet::Parameter::Boolean) do
     desc <<-EOS
       Per default a file download will be forced as there is no good way to check if the local file 
