@@ -29,6 +29,12 @@ download {'download if not exists':
     force => false,
     dest  => '/tmp/7z922.exe'
 }
+        
+download { 'download a file and maintain backup of old version with .bak suffix':
+    uri  => 'http://www.example.com/download/example.txt',
+    dest => '/tmp/example.txt',
+    backupsuffix => '.bak'
+}
 
 download { 'download with basic auth and ssl, ssl forced':
     uri     => 'http://host.com:8443/test.txt',
