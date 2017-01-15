@@ -96,8 +96,7 @@ Puppet::Type.type(:download).provide(:ruby) do
   def create
     succ = download()
     if !succ
-      Puppet.crit("HTTP download of '#{resource[:uri]}' failed!")
+      raise "HTTP download of '#{resource[:uri]}' failed!"
     end
-    succ
   end
 end
