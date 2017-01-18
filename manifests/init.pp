@@ -30,4 +30,15 @@ class http_download {
     user => 'test',
     pass => 'Basic_Auth1'
   }
+
+  if $::kernel == 'linux' {
+    http_download::download { 'test change mode':
+      uri  => 'http://www.google.com',
+      dest => "${target}google",
+      owner => 'bin',
+      group => 'bin',
+      mode => '0600'
+    }
+  }
+  
 }
